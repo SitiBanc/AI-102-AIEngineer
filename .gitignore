@@ -64,3 +64,6 @@
 
 # env files
 *.env
+
+# service principal files
+*-sp.json

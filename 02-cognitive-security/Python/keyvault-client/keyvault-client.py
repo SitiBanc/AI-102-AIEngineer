@@ -12,12 +12,12 @@ def main():
 
     try:
         # Get Configuration Settings
-        load_dotenv()
-        cog_endpoint = os.getenv('COG_SERVICE_ENDPOINT')
-        key_vault_name = os.getenv('KEY_VAULT')
-        app_tenant = os.getenv('TENANT_ID')
-        app_id = os.getenv('APP_ID')
-        app_password = os.getenv('APP_PASSWORD')
+        load_dotenv("./dev.env")
+        cog_endpoint = os.getenv("COG_SERVICE_ENDPOINT")
+        key_vault_name = os.getenv("KEY_VAULT")
+        app_tenant = os.getenv("TENANT_ID")
+        app_id = os.getenv("APP_ID")
+        app_password = os.getenv("APP_PASSWORD")
 
         # Get cognitive services key from keyvault using the service principal credentials
         key_vault_uri = f"https://{key_vault_name}.vault.azure.net/"
@@ -27,15 +27,16 @@ def main():
         cog_key = secret_key.value
 
         # Get user input (until they enter "quit")
-        userText =''
-        while userText.lower() != 'quit':
+        userText = ""
+        while userText.lower() != "quit":
             userText = input('\nEnter some text ("quit" to stop)\n')
-            if userText.lower() != 'quit':
+            if userText.lower() != "quit":
                 language = GetLanguage(userText)
-                print('Language:', language)
+                print("Language:", language)
 
     except Exception as ex:
         print(ex)
+
 
 def GetLanguage(text):
 
@@ -44,7 +45,7 @@ def GetLanguage(text):
     client = TextAnalyticsClient(endpoint=cog_endpoint, credential=credential)
 
     # Call the service to get the detected language
-    detectedLanguage = client.detect_language(documents = [text])[0]
+    detectedLanguage = client.detect_language(documents=[text])[0]
     return detectedLanguage.primary_language.name
 
 
